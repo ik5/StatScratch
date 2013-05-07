@@ -27,6 +27,26 @@ Requirements
   - Bundler
   - A lot of good will and happy thoughts
 
+--------
+Defaults
+--------
+The project arrive with default static files (located under the static folder):
+  - Default layout template named default.html.erb
+  - html5-boilerplate css files
+  - Dojo 1.9.0 - core files
+  - normalize.css for normalizing html5
+  - normalize-rtl.css for normalizing html5 with bi-directional languages
+  - modernizr-2.6.2 - for making old browsers support html5 sections
+ 
+-------------
+Documentation
+-------------
+The project documentation located under the docs directory, and provide 
+information about draft structure, including variables, separators and more.
+
+You can find more information on directory structure, usage and more on that 
+directory.
+
 -------
 License
 -------
