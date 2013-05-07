@@ -6,5 +6,5 @@ require 'bundler'
 
 Bundler.require(:default)
 
-
+require 'cli'
 
