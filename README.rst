@@ -1,3 +1,4 @@
+============
 StatScratch
 ============
 The following project is an attempt to scratch an itch of mine:
@@ -15,6 +16,7 @@ All of the existed static generators are either to specific for a task
 
 So I have an itch, and this is my scratch
 
+------------
 Requirements
 ------------
   - Linux distro
@@ -23,6 +25,7 @@ Requirements
   - Bundler
   - A lot of good will and happy thoughts
 
+-------
 License
 -------
 This whole projects and it's content is under the MIT license, unless mentioned 
