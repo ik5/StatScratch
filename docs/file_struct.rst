@@ -27,8 +27,57 @@ Then the erb template will generate a normal html output as file_struct.html at 
 Variables to be used
 --------------------
 :lang:
-   The `iso code`_ of the language that the content is for.
+   **Mandatory**. The `iso code`_ of the language that the content is for.
    "en" for English, "he" for Hebrew etc...
+
+:path:
+   **Mandatory**. The path the generated file should be.
+   /en/about/
+
+:title:
+   The page title to be used at the head title
+
+:template:
+    If set, can specify what is the template to use. Otherwise it will use the 
+    default template.
+
+:file:
+   If set, forces the name of the output file. Use it without the extension, only the name itself.
+   **Note:** Will override existed file in that name and path.
+
+:draft:
+   Default - true. If set to false, the content will be publish.
+
+:description:
+   If set, places a description metadata to the template (if it exists).
+ 
+:css:
+   Separated by pipes ("|"), if set with full load path, can load custom css 
+   files.
+
+:js:
+  Separated by pipes ("|"), if set with full load path, can load custom 
+  javascript files.
+
+:TODO:
+  - Add more supported variables
+  - Create ability to override existed css files
+  - Create ability to override existed javascript files
+ 
+------------
+File content
+------------
+One file can handle more then one language. It set on it's own section.
+
+Each section will be set using special char combinations from the *beginning*
+of the line.
+
+The separator is four colons, space and four minus:
+``:::: ----``
+
+Each variable is set specifically to a language, and it is not global.
+
+Beside the variable, and separator, everything else depends on the markup language itself.
 
 
 .. _Markdown: http://daringfireball.net/projects/markdown/
