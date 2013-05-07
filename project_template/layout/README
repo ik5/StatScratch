@@ -1,0 +1,2 @@
+Here you place the template layouts.
+They are erb based, so <name>.html.erb is the way to go here
