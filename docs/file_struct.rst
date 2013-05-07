@@ -31,9 +31,9 @@ Variables to be used
    "en" for English, "he" for Hebrew etc...
 
 
-:: _Markdown: http://daringfireball.net/projects/markdown/
-:: _reStructuredText: http://docutils.sourceforge.net/docs/ref/rst/introduction.html
-:: _Textile: http://redcloth.org/textile
-:: _MediaWiki: http://www.mediawiki.org/wiki/Help:Formatting
-:: _LaTeX: http://www.latex-project.org
-:: _`iso code`: http://en.wikipedia.org/wiki/ISO_639
+.. _Markdown: http://daringfireball.net/projects/markdown/
+.. _reStructuredText: http://docutils.sourceforge.net/docs/ref/rst/introduction.html
+.. _Textile: http://redcloth.org/textile
+.. _MediaWiki: http://www.mediawiki.org/wiki/Help:Formatting
+.. _LaTeX: http://www.latex-project.org
+.. _iso code: http://en.wikipedia.org/wiki/ISO_639
