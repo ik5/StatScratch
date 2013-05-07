@@ -2,6 +2,7 @@
 StatScratch
 ============
 The following project is an attempt to scratch an itch of mine:
+
   - Creating static web site, 
   - Providing dynamic and static routes 
   - Control the difference between draft to check and published materials
@@ -19,6 +20,7 @@ So I have an itch, and this is my scratch
 ------------
 Requirements
 ------------
+
   - Linux distro
   - Pandoc_.
   - Ruby 1.9.3/2.0
