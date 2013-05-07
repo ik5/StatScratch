@@ -17,7 +17,7 @@ Then the erb template will generate a normal html output as file_struct.html at 
 *File extensions are the type of content inside*, and supported files are:
   - rst         - reStructuredText_
 
-:TODO:
+**TODO:**
    - md/markdown - Markdown_
    - textile     - Textile_
    - mw          - MediaWiki_
@@ -87,8 +87,7 @@ After the four last colons, there will be *one* space data will arrive:
   javascript files.
 
 
-
-:TODO:
+**TODO:**
   - Add more supported variables
   - Create ability to override existed css files
   - Create ability to override existed javascript files
