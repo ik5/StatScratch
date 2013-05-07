@@ -9,15 +9,15 @@ module Scratch
         opts.separtor ''
         opts.separtor 'Action:'
 
-        opts.on('init', String, 'Create new project') do |act|
+        opts.on('init', 'Create new project') do |act|
           return :init
         end
 
-        opts.on('test', String, 'Test files on draft') do |act|
+        opts.on('test', 'Test files on draft') do |act|
           return :test
         end
 
-        opts.on('publish', String, 'Publish files on drafts that are set to false') do |act|
+        opts.on('publish', 'Publish files on drafts that are set to false') do |act|
           return :publish
         end
 
