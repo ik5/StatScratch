@@ -1,0 +1,14 @@
+/*
+ * The following file is a configuration file written in JSON format
+ *
+ */
+{
+  /* 
+   * 
+   * The default layout to be used, if no layout is set in the draft file.
+   * default.html.erb arrive with this project, however you do not have to 
+   * use it, and create your own.
+   *
+   */
+  "layout" : "default.html.erb",
+}
