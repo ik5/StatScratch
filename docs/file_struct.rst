@@ -23,9 +23,36 @@ Then the erb template will generate a normal html output as file_struct.html at 
    - mw          - MediaWiki_
    - tex         - LaTeX_
 
+
+------------
+File content
+------------
+One file can handle more then one language. It set on it's own section.
+
+Each section will be set using special char combinations from the *beginning*
+of the line.
+
+The separator is four colons, space and four minus:
+``:::: ----``
+
+Each variable is set specifically to a language, and it is not global.
+
+Beside the variable, and separator, everything else depends on the markup language itself.
+
+   
 --------------------
 Variables to be used
 --------------------
+
+Variables are set by four colons at the beginning of a line, without space 
+prior to them, then the variable name, then four more colons.
+``::::lang::::``
+
+After the four last colons, there will be *one* space data will arrive:
+``::::lang:::: en``
+
+**Supported variables:**
+
 :lang:
    **Mandatory**. The `iso code`_ of the language that the content is for.
    "en" for English, "he" for Hebrew etc...
@@ -64,20 +91,6 @@ Variables to be used
   - Create ability to override existed css files
   - Create ability to override existed javascript files
  
-------------
-File content
-------------
-One file can handle more then one language. It set on it's own section.
-
-Each section will be set using special char combinations from the *beginning*
-of the line.
-
-The separator is four colons, space and four minus:
-``:::: ----``
-
-Each variable is set specifically to a language, and it is not global.
-
-Beside the variable, and separator, everything else depends on the markup language itself.
 
 
 .. _Markdown: http://daringfireball.net/projects/markdown/
