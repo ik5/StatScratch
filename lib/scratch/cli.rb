@@ -80,7 +80,7 @@ module Scratch
           Actions::Exec.send(@action[:action], @action[:raw_args], @action[:args]) 
         else # should never happen, because it should be :test
           $stderr.puts "#{CLI::to_color('*', :red)} Invalid action \"#{@action[:action]}\"."
-          exit(-1)
+          exit(-2)
         end
       end # def run 
 
