@@ -27,6 +27,18 @@ module Scratch
       str
     end
 
+    def self.success(str)
+      "#{to_color('ok', :green)}] #{str}"
+    end
+
+    def self.info(str)
+      "[#{to_color('info', :yellow)}] #{str}"
+    end
+
+    def self.error(str)
+      "[#{to_color('error', :red)}] #{str}"
+    end
+
     DEFAILT_ACTION = :test
 
     ACTIONS        = [:init, :test, :publish]
@@ -76,10 +88,10 @@ module Scratch
 
       def run
         if ACTIONS.include? @action[:action]
-          puts "[#{CLI::to_color('info', :yellow)}] Executing #{@action[:action]}."
+          puts CLI::info("Executing #{@action[:action]}.")
           Actions::Exec.send(@action[:action], @action[:raw_args], @action[:args]) 
         else # should never happen, because it should be :test
-          $stderr.puts "#{CLI::to_color('*', :red)} Invalid action \"#{@action[:action]}\"."
+          $stderr.puts CLI::error("Invalid action \"#{@action[:action]}\".")
           exit(-2)
         end
       end # def run 
