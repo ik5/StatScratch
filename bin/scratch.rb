@@ -6,9 +6,7 @@ require 'bundler'
 
 Bundler.require(:default)
 
-require 'cli'
-require 'actions'
-require 'version'
+require '../lib/scratch_all'
 
 action = Scratch::ToAction.new
 action.run
