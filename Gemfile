@@ -6,4 +6,4 @@ gem 'pandoc-ruby'
 gem 'erubis'
 gem 'sass'
 gem 'compass'
-
+gem 'builder'
