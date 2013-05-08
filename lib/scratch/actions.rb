@@ -4,13 +4,13 @@ module Scratch
   module Actions
     class Exec
 
-      def self.init(args)
+      def self.init(raw_args, args)
       end
 
-      def self.test(args)
+      def self.test(raw_args, args)
       end
 
-      def self.publish(args)
+      def self.publish(raw_args, args)
       end
 
     end # class Exec
