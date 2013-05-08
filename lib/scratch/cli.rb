@@ -2,6 +2,25 @@
 
 module Scratch
   module CLI
+
+    COLORS = {
+      :reset     => "\e[0m",
+      :bold      => "\e[1m",
+      :italic    => "\e[3m",
+      :underline => "\e[4m",
+      :blink1    => "\e[5m",
+      :blink2    => "\e[6m",
+      :blinkoff  => "\e[25m",
+      :black     => "\e[30m",
+      :red       => "\e[31m",
+      :green     => "\e[32m",
+      :yellow    => "\e[33m",
+      :blue      => "\e[34m",
+      :magenta   => "\e[35m",
+      :cyan      => "\e[36m",
+      :white     => "\e[47m",
+    }
+
     DEFAILT_ACTION = :test
 
     ACTIONS        = [:init, :test, :publish]
