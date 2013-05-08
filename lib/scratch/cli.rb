@@ -1,32 +1,56 @@
 # encoding: utf-8
 
 module Scratch
-  DEFAILT_ACTION = :test
+  module CLI
+    DEFAILT_ACTION = :test
 
-  ACTIONS        = [:init, :test, :publish]
+    ACTIONS        = [:init, :test, :publish]
 
-  class CliParser
-    def self.parse(args)
-      opts = Slop.parse(args) do 
-        command :init do
-          
-        end # command 'init' do
-      end # Slop.parse(args)
+    class CliParser
+      def self.parse(argv)
+        cmd = nil
+        Slop.parse(argv) do 
+          command :init do
+            run do |opt, args|
+              cmd = { action: :init, args: args }
+            end # run do |opt, args|
+          end # command :init do
 
-      opts
-    end # def self.parse
+          command :test do
+            run do |opt, args|
+              cmd = { action: :test, args: args }
+            end # run do |opt, args|
+          end # command :test do
 
-  end # class CliParser
+          command :publish do
+            run do |opt, args|
+              cmd = { action: :publish, args: args }
+            end # run do |opt, args|
+          end # command :publish do
+        end # Slop.parse(args)
 
-  class ToAction
-    def initialize(argv)
-       @action = CliParser.parse(argv)
-    end # def initialize
+        cmd 
+      end # def self.parse
 
-    def run 
-    end # def run 
+    end # class CliParser
 
-  end # class ToAction
+    class ToAction
+      def initialize(argv)
+         @action = CliParser.parse(argv)
 
+         # if action is nil, set the default action
+         @action = { action: DEFAILT_ACTION, args: [] } unless @action
+      end # def initialize
+
+      def run 
+        case @action[:action]
+          when :init
+          when :test
+          when :publish
+        end
+      end # def run 
+
+    end # class ToAction
+  end # module CLI
 end # module Scratch
 
