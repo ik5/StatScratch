@@ -2,13 +2,19 @@
 module Scratch 
 
   module Actions
+
+    def self.copy_templates(dest)
+    end
+
     class Exec
+      require 'fileutils'
 
       def self.init(raw_args, args)
         if raw_args.length != 1
           $stderr.puts CLI::error("No name was provided for the project")
           exit(-3)
         end
+        
       end
 
       def self.test(raw_args, args)
