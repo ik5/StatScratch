@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 require 'rubygems'
-require 'optparse'
 
 begin
   require 'bundler'
