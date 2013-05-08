@@ -3,16 +3,18 @@
 
 require 'rubygems'
 
+# Adding to load path also our location. 
+$BASE_PATH = File.expand_path(File.dirname(__FILE__) + '/..')
+$LOAD_PATH.unshift($BASE_PATH + '/lib')
+
 begin
   require 'bundler'
+  ENV["BUNDLE_GEMFILE"] = $BASE_PATH + '/Gemfile'
   Bundler.require(:default)
-rescue LoadError > e
+rescue LoadError => e
   $stderr.puts "Could not load dependency: #{e.message}"
   exit(-1)
 end
-
-# Adding to load path also our location. 
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 
 require 'scratch_all'
 
