@@ -39,6 +39,14 @@ module Scratch
       "[#{to_color('error', :red)}] #{str}"
     end
 
+    def self.color_v
+      to_color('✓', :green)
+    end
+
+    def self.color_x
+      to_color('✘', :red)
+    end
+
     DEFAILT_ACTION = :test
 
     ACTIONS        = [:init, :test, :publish]
