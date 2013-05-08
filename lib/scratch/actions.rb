@@ -1,17 +1,20 @@
 
 module Scratch 
 
-  class Actions
+  module Actions
+    class Exec
 
-    def self.init
-    end
+      def self.init
+      end
 
-    def self.test
-    end
+      def self.test
+      end
 
-    def self.publish
-    end
+      def self.publish
+      end
 
-  end
+    end # class Exec
+
+  end # module Actions
 
 end # module Scratch
