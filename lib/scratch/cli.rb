@@ -21,6 +21,11 @@ module Scratch
       :white     => "\e[47m",
     }
 
+    def self.to_color(str, color = :green )
+      # do we have a valid color ?
+      str
+    end
+
     DEFAILT_ACTION = :test
 
     ACTIONS        = [:init, :test, :publish]
