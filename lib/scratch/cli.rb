@@ -11,17 +11,18 @@ module Scratch
       :blink1    => "\e[5m",
       :blink2    => "\e[6m",
       :blinkoff  => "\e[25m",
-      :black     => "\e[30m",
-      :red       => "\e[31m",
-      :green     => "\e[32m",
-      :yellow    => "\e[33m",
-      :blue      => "\e[34m",
-      :magenta   => "\e[35m",
-      :cyan      => "\e[36m",
-      :white     => "\e[47m",
+      :black     => "\e[30;1m",
+      :red       => "\e[31;1m",
+      :green     => "\e[32;1m",
+      :yellow    => "\e[33;1m",
+      :blue      => "\e[34;1m",
+      :magenta   => "\e[35;1m",
+      :cyan      => "\e[36;1m",
+      :white     => "\e[47;1m",
     }
 
     def self.to_color(str, color = :green )
+      return COLORS[color] + str + COLORS[:reset] if COLORS.include? color
       # do we have a valid color ?
       str
     end
@@ -66,11 +67,13 @@ module Scratch
          @action = { action: DEFAILT_ACTION, args: [] } unless @action
       end # def initialize
 
-      def run 
-        case @action[:action]
-          when :init
-          when :test
-          when :publish
+      def run
+        if ACTIONS.include? @action[:action]
+          puts "[#{CLI::to_color('info', :yellow)}] Executing #{@action[:action]}."
+          Actions::Exec.send(@action[:action]) 
+        else # should never happen, because it should be :test
+          $stderr.puts "#{CLI::to_color('*', :red)} Invalid action \"#{@action[:action]}\"."
+          exit(-1)
         end
       end # def run 
 
