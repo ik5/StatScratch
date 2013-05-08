@@ -70,7 +70,7 @@ module Scratch
       def run
         if ACTIONS.include? @action[:action]
           puts "[#{CLI::to_color('info', :yellow)}] Executing #{@action[:action]}."
-          Actions::Exec.send(@action[:action]) 
+          Actions::Exec.send(@action[:action], @action[:args]) 
         else # should never happen, because it should be :test
           $stderr.puts "#{CLI::to_color('*', :red)} Invalid action \"#{@action[:action]}\"."
           exit(-1)
