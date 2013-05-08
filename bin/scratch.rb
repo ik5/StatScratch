@@ -8,7 +8,7 @@ begin
   Bundler.require(:default)
 rescue LoadError > e
   $stderr.puts "Could not load dependency: #{e.message}"
-  exit(-2)
+  exit(-1)
 end
 
 # Adding to load path also our location. 
