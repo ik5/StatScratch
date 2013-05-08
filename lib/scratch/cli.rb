@@ -39,8 +39,8 @@ module Scratch
   end # class CliParser
 
   class ToAction
-    def initialize
-       @action = CliParser.parse
+    def initialize(argv)
+       @action = CliParser.parse(argv)
     end # def initialize
 
     def run 

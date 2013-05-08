@@ -17,6 +17,6 @@ $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 
 require 'scratch_all'
 
-action = Scratch::ToAction.new
+action = Scratch::ToAction.new(ARGV)
 action.run
 
