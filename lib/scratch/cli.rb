@@ -29,7 +29,7 @@ module Scratch
       end
 
       def success(str, sign = :text)
-        text = sign == :smybol ? '✓' : 'ok'
+        text = sign == :symbol ? '✓' : 'ok'
         "[#{to_color(text, :green)}] #{str}"
       end
 
@@ -38,7 +38,7 @@ module Scratch
       end
 
       def error(str, sign = :text)
-        text = sign == :smybol ? '✘' : 'error'
+        text = sign == :symbol ? '✘' : 'error'
         "[#{to_color(text, :red)}] #{str}"
       end
 
