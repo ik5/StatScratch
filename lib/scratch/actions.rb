@@ -115,7 +115,7 @@ module Scratch
         
         exit(result[0]) if result[0] < 0
 
-        Actions::FileActions.copy_templates
+        result = Actions::FileActions.copy_templates
       end
 
       def self.test(raw_args, args)
