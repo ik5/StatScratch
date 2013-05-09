@@ -113,7 +113,12 @@ module Scratch
 
         result = Actions::FileActions.generate_project_dir(project_path)
         if result[0] == 0 || result[0] == 1
-          Dir.chdir(project_path) 
+          begin
+            Dir.chdir(project_path) 
+          rescue Errno::EACCES 
+            $stderr.puts CLI::error('Could not access project directory, permission denied, aborting', :symbol)
+            exit(Scratch::NO_PREMISSION_ERROR)
+          end
         end
 
         case result[0]
