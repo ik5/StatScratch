@@ -3,11 +3,12 @@ module Scratch
 
   module Actions
 
+    require 'fileutils'
+
     def self.copy_templates(dest)
     end
 
     class Exec
-      require 'fileutils'
 
       def self.init(raw_args, args)
         if raw_args.length != 1
