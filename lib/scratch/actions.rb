@@ -12,23 +12,24 @@ module Scratch
         tree = []
         Dir.foreach(path) do |f|
           next if f == '.' || f == '..'
-          location = File.join(path, f)
+          location   = File.join(path, f)
+          loc_suffix = location[@src.length..-1]
           if File.directory?(location)
-            tree << File.join(f, '') # add last slash
+            tree << File.join(loc_suffix, '') # add last slash
             tree += scan_dir(location)
           else
-            tree << f
+            tree << loc_suffix
           end # if File.directory?(location)
         end # Dir.foreach(path) do |f|
+        tree
       end # def scan_dir(path)
 
       def self.copy_templates
-        dest = Dir.pwd
 
+        tree = scan_dir(@src)
+        dirs = tree.drop_while { |a| a.end_with?(File::SEPARATOR) }
+        tree.delete_if { |a| a.end_with?(File::SEPARATOR) }
 
-        # logic goes here
-
-        Dir.chdir(dest) # return to dest when done
       end # self.copy_templates
 
       def self.copy_file(src, dest)
@@ -75,7 +76,7 @@ module Scratch
         project_name = raw_args[0]
         project_path = File.join(Dir.pwd, project_name)
 
-        result = FileActions.generate_project_dir(project_path)
+        result = Actions::FileActions.generate_project_dir(project_path)
         if result[0] == 0 || result[0] == 1
           Dir.chdir(project_path) 
         end
@@ -92,6 +93,7 @@ module Scratch
         end # case result
         
         exit(result[0]) if result[0] < 0
+
       end
 
       def self.test(raw_args, args)
