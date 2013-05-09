@@ -27,16 +27,18 @@ module Scratch
       str
     end
 
-    def self.success(str)
-      "#{to_color('ok', :green)}] #{str}"
+    def self.success(str, sign = :text)
+      text = sign == :smybol ? '✓' : 'ok'
+      "[#{to_color(text, :green)}] #{str}"
     end
 
     def self.info(str)
       "[#{to_color('info', :yellow)}] #{str}"
     end
 
-    def self.error(str)
-      "[#{to_color('error', :red)}] #{str}"
+    def self.error(str, sign = :text)
+      text = sign == :smybol ? '✘' : 'error'
+      "[#{to_color(text, :red)}] #{str}"
     end
 
     def self.color_v
