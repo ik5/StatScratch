@@ -25,6 +25,7 @@ module Scratch
       def self.copy_templates
         dest = Dir.pwd
 
+
         # logic goes here
 
         Dir.chdir(dest) # return to dest when done
@@ -59,10 +60,13 @@ module Scratch
 
         project_name = raw_args[0]
         current_dir  = Dir.pwd
+        project_path = File.join(current_dir, project_name)
 
         begin
-          FileUtils.mkdir(File.join(current_dir, project_name))
+          FileUtils.mkdir(project_path)
           puts CLI::success("Created #{project_name}")
+
+          Dir.chdir(project_path)
         rescue Errno::EACCES
           $stderr.puts CLI::error("Can not create #{project_name}, permission denied")
           exit(-4)
