@@ -25,42 +25,63 @@ module Scratch
       end # def scan_dir(path)
 
       def self.copy_templates
-
+        dest = Dir.pwd
         tree = scan_dir(@src)
-        dirs = tree.drop_while { |a| a.end_with?(File::SEPARATOR) }
+        dirs = tree.select { |a| a.end_with?(File::SEPARATOR) }
         tree.delete_if { |a| a.end_with?(File::SEPARATOR) }
+
+        # where to take the files from
+        src_files  = tree.map { |f| File.join(@src, f) }
+        # where to place the files
+        dest_files = tree.map { |f| File.join(dest, f) }
+        # directories to create
+        dest_dirs  = dirs.map  { |d| File.join(dest, d) }
+
+        result = mkdir(dest_dirs)
+        return result unless result[0] == 1
+        puts CLI::success('Created skelaton directories')
 
       end # self.copy_templates
 
-      def self.copy_file(src, dest)
-        FileUtils.cp(src, dest)
-        true
-      rescue Errno::ENOENT => e
-        $stderr.puts CLI::error("Could not copy file: #{e.message}")
-        return false
+      def self.mkdir(dirs)
+        FileUtils.mkdir_p(dirs)
+        [1]
       rescue Errno::EACCES => e
-        $stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
-        return false
-      rescue ArgumentError
-        $stderr.puts CLI::error('Could not copy source to itself')
-        return false
+        return [Scratch::NO_PREMISSION_ERROR, e]
       rescue => e
         $stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
-        return false
+        return [Scratch::UNKNOWN_ERROR, e]
+      end # def self.mkdir(dirs)
+
+      def self.copy_file(src, dest)
+        FileUtils.cp(src, dest)
+        [1]
+      rescue Errno::ENOENT => e
+        #$stderr.puts CLI::error("Could not copy file: #{e.message}")
+        return [Scratch::FILE_NOT_FOUND, e]
+      rescue Errno::EACCES => e
+        #$stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
+        return [Scratch::NO_PREMISSION_ERROR, e]
+      rescue ArgumentError => e
+        #$stderr.puts CLI::error('Could not copy source to itself')
+        return [Scratch::SELF_COPY_FILE, e]
+      rescue => e
+        #$stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
+        return [Scratch::UNKNOWN_ERROR, e]
       end # def self.copy_file(src, dest)
 
       def self.generate_project_dir(project_path)
 
         return [0] if File.exists?(project_path)
 
-        FileUtils.mkdir(project_path)
+        Dir.mkdir(project_path)
         return [1] # just to see it clear
       rescue Errno::EACCES
-        return [-4]
+        return [Scratch::NO_PREMISSION_ERROR]
       rescue Errno::EEXIST # should never happen, but just in case
         return [0]
       rescue => e
-        return [-5, e]
+        return [Scratch::UNKNOWN_ERROR, e]
       end
 
     end # class FileActions
