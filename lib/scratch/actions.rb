@@ -41,6 +41,14 @@ module Scratch
         return result unless result[0] == 1
         puts CLI::success('Created skelaton directories')
 
+        src_files.each_with_index do |file, i|
+          # TODO: Check if a file is a template, and work with it
+          result = copy_file(file, dest_files[i])
+          return if result[0] < 0
+          puts CLI::success("generated #{file[@src.length..-1]}")
+        end
+        
+        return [1] # generated template
       end # self.copy_templates
 
       def self.mkdir(dirs)
