@@ -3,102 +3,104 @@ module Scratch
 
   module Actions
 
-    class FileActions
+    module FileActions
       require 'fileutils'
+       @src = File.join($BASE_PATH, 'project_template')
 
-      @src = File.join($BASE_PATH, 'project_template')
+      class << self
+        def scan_dir(path)
+          tree = []
+          Dir.foreach(path) do |f|
+            next if f == '.' || f == '..'
+            location   = File.join(path, f)
+            loc_suffix = location[@src.length..-1]
+            if File.directory?(location)
+              tree << File.join(loc_suffix, '') # add last slash
+              tree += scan_dir(location)
+            else
+              tree << loc_suffix
+            end # if File.directory?(location)
+          end # Dir.foreach(path) do |f|
+          tree
+        end # def scan_dir(path)
 
-      def self.scan_dir(path)
-        tree = []
-        Dir.foreach(path) do |f|
-          next if f == '.' || f == '..'
-          location   = File.join(path, f)
-          loc_suffix = location[@src.length..-1]
-          if File.directory?(location)
-            tree << File.join(loc_suffix, '') # add last slash
-            tree += scan_dir(location)
-          else
-            tree << loc_suffix
-          end # if File.directory?(location)
-        end # Dir.foreach(path) do |f|
-        tree
-      end # def scan_dir(path)
+        def copy_templates
+          dest = Dir.pwd
+          tree = scan_dir(@src)
+          dirs = tree.select { |a| a.end_with?(File::SEPARATOR) }
+          tree.delete_if { |a| a.end_with?(File::SEPARATOR) }
 
-      def self.copy_templates
-        dest = Dir.pwd
-        tree = scan_dir(@src)
-        dirs = tree.select { |a| a.end_with?(File::SEPARATOR) }
-        tree.delete_if { |a| a.end_with?(File::SEPARATOR) }
+          # where to take the files from
+          src_files  = tree.map { |f| File.join(@src, f) }
+          # where to place the files
+          dest_files = tree.map { |f| File.join(dest, f) }
+          # directories to create
+          dest_dirs  = dirs.map  { |d| File.join(dest, d) }
 
-        # where to take the files from
-        src_files  = tree.map { |f| File.join(@src, f) }
-        # where to place the files
-        dest_files = tree.map { |f| File.join(dest, f) }
-        # directories to create
-        dest_dirs  = dirs.map  { |d| File.join(dest, d) }
+          result = mkdir(dest_dirs)
+          return result unless result[0] == 1
+          puts CLI::success('Created/Updated skelaton directories')
 
-        result = mkdir(dest_dirs)
-        return result unless result[0] == 1
-        puts CLI::success('Created/Updated skelaton directories')
-
-        src_files.each_with_index do |file, i|
-          file_name = file[@src.length..-1]
-          # TODO: Check if a file is a template, and work with it
-          if File.exists?(dest_files[i])
-            puts CLI::info("#{file_name} exists, no touching") 
-            next
+          src_files.each_with_index do |file, i|
+            file_name = file[@src.length..-1]
+            # TODO: Check if a file is a template, and work with it
+            if File.exists?(dest_files[i])
+              puts CLI::info("#{file_name} exists, no touching") 
+              next
+            end
+            result = copy_file(file, dest_files[i])
+            return if result[0] < 0
+            
+            puts CLI::success("generated #{file_name}") 
           end
-          result = copy_file(file, dest_files[i])
-          return if result[0] < 0
           
-          puts CLI::success("generated #{file_name}") 
-        end
-        
-        return [1] # generated template
-      end # self.copy_templates
+          return [1] # generated template
+        end # self.copy_templates
 
-      def self.mkdir(dirs)
-        FileUtils.mkdir_p(dirs)
-        [1]
-      rescue Errno::EACCES => e
-        return [Scratch::NO_PREMISSION_ERROR, e]
-      rescue => e
-        $stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
-        return [Scratch::UNKNOWN_ERROR, e]
-      end # def self.mkdir(dirs)
+        def mkdir(dirs)
+          FileUtils.mkdir_p(dirs)
+          [1]
+        rescue Errno::EACCES => e
+          return [Scratch::NO_PREMISSION_ERROR, e]
+        rescue => e
+          $stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
+          return [Scratch::UNKNOWN_ERROR, e]
+        end # def self.mkdir(dirs)
 
-      def self.copy_file(src, dest)
-        FileUtils.cp(src, dest)
-        [1]
-      rescue Errno::ENOENT => e
-        #$stderr.puts CLI::error("Could not copy file: #{e.message}")
-        return [Scratch::FILE_NOT_FOUND, e]
-      rescue Errno::EACCES => e
-        #$stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
-        return [Scratch::NO_PREMISSION_ERROR, e]
-      rescue ArgumentError => e
-        #$stderr.puts CLI::error('Could not copy source to itself')
-        return [Scratch::SELF_COPY_FILE, e]
-      rescue => e
-        #$stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
-        return [Scratch::UNKNOWN_ERROR, e]
-      end # def self.copy_file(src, dest)
+        def copy_file(src, dest)
+          FileUtils.cp(src, dest)
+          [1]
+        rescue Errno::ENOENT => e
+          #$stderr.puts CLI::error("Could not copy file: #{e.message}")
+          return [Scratch::FILE_NOT_FOUND, e]
+        rescue Errno::EACCES => e
+          #$stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
+          return [Scratch::NO_PREMISSION_ERROR, e]
+        rescue ArgumentError => e
+          #$stderr.puts CLI::error('Could not copy source to itself')
+          return [Scratch::SELF_COPY_FILE, e]
+        rescue => e
+          #$stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
+          return [Scratch::UNKNOWN_ERROR, e]
+        end # def self.copy_file(src, dest)
 
-      def self.generate_project_dir(project_path)
+        def generate_project_dir(project_path)
 
-        return [0] if File.exists?(project_path)
+          return [0] if File.exists?(project_path)
 
-        Dir.mkdir(project_path)
-        return [1] # just to see it clear
-      rescue Errno::EACCES
-        return [Scratch::NO_PREMISSION_ERROR]
-      rescue Errno::EEXIST # should never happen, but just in case
-        return [0]
-      rescue => e
-        return [Scratch::UNKNOWN_ERROR, e]
-      end
+          Dir.mkdir(project_path)
+          return [1] # just to see it clear
+        rescue Errno::EACCES
+          return [Scratch::NO_PREMISSION_ERROR]
+        rescue Errno::EEXIST # should never happen, but just in case
+          return [0]
+        rescue => e
+          return [Scratch::UNKNOWN_ERROR, e]
+        end # generate_project_dir(project_path)
 
-    end # class FileActions
+      end # class << self
+
+    end # module FileActions
 
     class Exec
 
