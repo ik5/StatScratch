@@ -8,7 +8,7 @@ module Scratch
 
       @src = File.join($BASE_PATH, 'project_template')
 
-      def scan_dir(path)
+      def self.scan_dir(path)
         tree = []
         Dir.foreach(path) do |f|
           next if f == '.' || f == '..'
@@ -48,6 +48,20 @@ module Scratch
         return false
       end # def self.copy_file(src, dest)
 
+      def self.generate_project_dir(project_path)
+
+        return [0] if File.exists?(project_path)
+
+        FileUtils.mkdir(project_path)
+        return [1] # just to see it clear
+      rescue Errno::EACCES
+        return [-4]
+      rescue Errno::EEXIST # should never happen, but just in case
+        return [0]
+      rescue => e
+        return [-5, e]
+      end
+
     end # class FileActions
 
     class Exec
@@ -59,24 +73,25 @@ module Scratch
         end
 
         project_name = raw_args[0]
-        current_dir  = Dir.pwd
-        project_path = File.join(current_dir, project_name)
+        project_path = File.join(Dir.pwd, project_name)
 
-        begin
-          FileUtils.mkdir(project_path)
-          puts CLI::success("Created #{project_name}")
-
-          Dir.chdir(project_path)
-        rescue Errno::EACCES
-          $stderr.puts CLI::error("Can not create #{project_name}, permission denied")
-          exit(-4)
-        rescue Errno::EEXIST
-          puts CLI::info("#{project_name} already exists, using it")
-        rescue => e
-          $stderr.puts CLI::error("Unknown error: #{e.message}")
-          exit(-5)
+        result = FileActions.generate_project_dir(project_path)
+        if result[0] == 0 || result[0] == 1
+          Dir.chdir(project_path) 
         end
 
+        case result[0]
+        when 0 
+          puts CLI::info("#{project_name} already exists, using it")
+        when 1 
+          puts CLI::success("Created #{project_name}")
+        when -4  
+          $stderr.puts CLI::error("Can not create #{project_name}, permission denied")
+        when -5
+          $stderr.puts CLI::error("Unknown error: #{result[1].message}")
+        end # case result
+        
+        exit(result[0]) if result[0] < 0
       end
 
       def self.test(raw_args, args)
