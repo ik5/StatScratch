@@ -104,7 +104,7 @@ module Scratch
           Actions::Exec.send(@action[:action], @action[:raw_args], @action[:args]) 
         else # should never happen, because it should be :test
           $stderr.puts CLI::error("Invalid action \"#{@action[:action]}\".")
-          exit(-2)
+          exit(Scratch::INVALID_CLI_ACTION)
         end
       end # def run 
 
