@@ -3,51 +3,53 @@
 module Scratch
   module CLI
 
-    COLORS = {
-      :reset     => "\e[0m",
-      :bold      => "\e[1m",
-      :italic    => "\e[3m",
-      :underline => "\e[4m",
-      :blink1    => "\e[5m",
-      :blink2    => "\e[6m",
-      :blinkoff  => "\e[25m",
-      :black     => "\e[30;1m",
-      :red       => "\e[31;1m",
-      :green     => "\e[32;1m",
-      :yellow    => "\e[33;1m",
-      :blue      => "\e[34;1m",
-      :magenta   => "\e[35;1m",
-      :cyan      => "\e[36;1m",
-      :white     => "\e[47;1m",
-    }
+    class << self
+      COLORS = {
+        :reset     => "\e[0m",
+        :bold      => "\e[1m",
+        :italic    => "\e[3m",
+        :underline => "\e[4m",
+        :blink1    => "\e[5m",
+        :blink2    => "\e[6m",
+        :blinkoff  => "\e[25m",
+        :black     => "\e[30;1m",
+        :red       => "\e[31;1m",
+        :green     => "\e[32;1m",
+        :yellow    => "\e[33;1m",
+        :blue      => "\e[34;1m",
+        :magenta   => "\e[35;1m",
+        :cyan      => "\e[36;1m",
+        :white     => "\e[47;1m",
+      }
 
-    def self.to_color(str, color = :green )
-      return COLORS[color] + str + COLORS[:reset] if COLORS.include? color
-      # do we have a valid color ?
-      str
-    end
+      def to_color(str, color = :green )
+        return COLORS[color] + str + COLORS[:reset] if COLORS.include? color
+        # do we have a valid color ?
+        str
+      end
 
-    def self.success(str, sign = :text)
-      text = sign == :smybol ? '✓' : 'ok'
-      "[#{to_color(text, :green)}] #{str}"
-    end
+      def success(str, sign = :text)
+        text = sign == :smybol ? '✓' : 'ok'
+        "[#{to_color(text, :green)}] #{str}"
+      end
 
-    def self.info(str)
-      "[#{to_color('info', :yellow)}] #{str}"
-    end
+      def info(str)
+        "[#{to_color('info', :yellow)}] #{str}"
+      end
 
-    def self.error(str, sign = :text)
-      text = sign == :smybol ? '✘' : 'error'
-      "[#{to_color(text, :red)}] #{str}"
-    end
+      def error(str, sign = :text)
+        text = sign == :smybol ? '✘' : 'error'
+        "[#{to_color(text, :red)}] #{str}"
+      end
 
-    def self.color_v
-      to_color('✓', :green)
-    end
+      def color_v
+        to_color('✓', :green)
+      end
 
-    def self.color_x
-      to_color('✘', :red)
-    end
+      def color_x
+        to_color('✘', :red)
+      end
+    end # class << self
 
     DEFAILT_ACTION = :test
 
