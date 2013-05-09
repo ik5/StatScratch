@@ -70,7 +70,7 @@ module Scratch
       def self.init(raw_args, args)
         if raw_args.length != 1
           $stderr.puts CLI::error('No name was provided for the project')
-          exit(-3)
+          exit(Scratch::NO_PROJECT_NAME)
         end
 
         project_name = raw_args[0]
@@ -86,14 +86,15 @@ module Scratch
           puts CLI::info("#{project_name} already exists, using it")
         when 1 
           puts CLI::success("Created #{project_name}")
-        when -4  
+        when Scratch::NO_PREMISSION_ERROR
           $stderr.puts CLI::error("Can not create #{project_name}, permission denied")
-        when -5
+        when Scratch::UNKNOWN_ERROR
           $stderr.puts CLI::error("Unknown error: #{result[1].message}")
         end # case result
         
         exit(result[0]) if result[0] < 0
 
+        Actions::FileActions.copy_templates
       end
 
       def self.test(raw_args, args)
