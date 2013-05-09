@@ -71,16 +71,12 @@ module Scratch
           FileUtils.cp(src, dest)
           [1]
         rescue Errno::ENOENT => e
-          #$stderr.puts CLI::error("Could not copy file: #{e.message}")
           return [Scratch::FILE_NOT_FOUND, e]
         rescue Errno::EACCES => e
-          #$stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
           return [Scratch::NO_PREMISSION_ERROR, e]
         rescue ArgumentError => e
-          #$stderr.puts CLI::error('Could not copy source to itself')
           return [Scratch::SELF_COPY_FILE, e]
         rescue => e
-          #$stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
           return [Scratch::UNKNOWN_ERROR, e]
         end # def self.copy_file(src, dest)
 
