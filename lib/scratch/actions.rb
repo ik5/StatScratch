@@ -120,7 +120,7 @@ module Scratch
         when 0 
           puts CLI::info("#{project_name} already exists, using it")
         when 1 
-          puts CLI::success("Created #{project_name}")
+          puts CLI::success("Created #{project_name} directory")
         when Scratch::NO_PREMISSION_ERROR
           $stderr.puts CLI::error("Can not create #{project_name}, permission denied")
         when Scratch::UNKNOWN_ERROR
@@ -130,6 +130,21 @@ module Scratch
         exit(result[0]) if result[0] < 0
 
         result = Actions::FileActions.copy_templates
+        case result[0]
+          when 0,1
+            puts CLI::info("#{project_name} is ready for you. Enjoy")
+            exit(0)
+          when Scratch::NO_PREMISSION_ERROR
+            $stderr.puts CLI::error("Permission Error, aborting", :symbol)
+          when Scratch::UNKNOWN_ERROR
+            $stderr.puts CLI::error("Unknown error: #{result[1].message}, aborting", :symbol)
+          when Scratch::FILE_NOT_FOUND
+            $stderr.puts CLI::error("Template file was not found, aborting", :smybol)
+          when Scratch::SELF_COPY_FILE
+            $stderr.puts CLI::error("Cannot copy file to itself, aborting", :smybol)
+        end
+
+        exit(result[0])
       end
 
       def self.test(raw_args, args)
