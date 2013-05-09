@@ -3,14 +3,19 @@ module Scratch
 
   module Actions
 
-    require 'fileutils'
-
     class FileActions
+      require 'fileutils'
+
       @src = File.join($BASE_PATH, 'project_template')
 
-      def self.copy_templates(dest)
+      def self.copy_templates
+        dest = Dir.pwd
+        Dir.chdir(@src) # going over the project_template directory to copy to dest
 
-      end
+        # logic goes here
+
+        Dir.chdir(dest) # return to dest when done
+      end # self.copy_templates
 
       def self.copy_file(src, dest)
         FileUtils.cp(src, dest)
@@ -27,7 +32,8 @@ module Scratch
       rescue => e
         $stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
         return false
-      end
+      end # def self.copy_file(src, dest)
+
     end # class FileActions
 
     class Exec
@@ -39,7 +45,7 @@ module Scratch
         end
 
         project_name = raw_args[0]
-        current_dir  = FileUtils.pwd
+        current_dir  = Dir.pwd
 
         begin
           FileUtils.mkdir(File.join(current_dir, project_name))
