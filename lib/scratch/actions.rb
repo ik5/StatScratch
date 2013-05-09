@@ -39,13 +39,19 @@ module Scratch
 
         result = mkdir(dest_dirs)
         return result unless result[0] == 1
-        puts CLI::success('Created skelaton directories')
+        puts CLI::success('Created/Updated skelaton directories')
 
         src_files.each_with_index do |file, i|
+          file_name = file[@src.length..-1]
           # TODO: Check if a file is a template, and work with it
+          if File.exists?(dest_files[i])
+            puts CLI::info("#{file_name} exists, no touching") 
+            next
+          end
           result = copy_file(file, dest_files[i])
           return if result[0] < 0
-          puts CLI::success("generated #{file[@src.length..-1]}")
+          
+          puts CLI::success("generated #{file_name}") 
         end
         
         return [1] # generated template
