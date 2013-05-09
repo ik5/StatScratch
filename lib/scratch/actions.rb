@@ -5,26 +5,30 @@ module Scratch
 
     require 'fileutils'
 
-    def self.copy_templates(dest)
+    class FileActions
+      @src = File.join($BASE_PATH, 'project_template')
 
-    end
+      def self.copy_templates(dest)
 
-    def self.copy_file(src, dest)
-      FileUtils.cp(src, dest)
-      true
-    rescue Errno::ENOENT => e
-      $stderr.puts CLI::error("Could not copy file: #{e.message}")
-      return false
-    rescue Errno::EACCES => e
-      $stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
-      return false
-    rescue ArgumentError
-      $stderr.puts CLI::error('Could not copy source to itself')
-      return false
-    rescue => e
-      $stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
-      return false
-    end
+      end
+
+      def self.copy_file(src, dest)
+        FileUtils.cp(src, dest)
+        true
+      rescue Errno::ENOENT => e
+        $stderr.puts CLI::error("Could not copy file: #{e.message}")
+        return false
+      rescue Errno::EACCES => e
+        $stderr.puts CLI::error("Problem with permission while trying to copy #{e.message}")
+        return false
+      rescue ArgumentError
+        $stderr.puts CLI::error('Could not copy source to itself')
+        return false
+      rescue => e
+        $stderr.puts CLI::error("Unknown error while trying to copy file: #{e.message}")
+        return false
+      end
+    end # class FileActions
 
     class Exec
 
