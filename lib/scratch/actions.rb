@@ -8,9 +8,22 @@ module Scratch
 
       @src = File.join($BASE_PATH, 'project_template')
 
+      def scan_dir(path)
+        tree = []
+        Dir.foreach(path) do |f|
+          next if f == '.' || f == '..'
+          location = File.join(path, f)
+          if File.directory?(location)
+            tree << File.join(f, '') # add last slash
+            tree += scan_dir(location)
+          else
+            tree << f
+          end # if File.directory?(location)
+        end # Dir.foreach(path) do |f|
+      end # def scan_dir(path)
+
       def self.copy_templates
         dest = Dir.pwd
-        Dir.chdir(@src) # going over the project_template directory to copy to dest
 
         # logic goes here
 
